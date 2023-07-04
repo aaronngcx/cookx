@@ -29,6 +29,13 @@ class AppointmentController extends Controller
         return view('appointment.create', compact('appointments'));
     }
 
+    public function edit($appointment)
+    {
+        $appointment = Appointment::findOrFail($appointment);
+
+        return view('appointment.edit', compact('appointment'));
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -54,7 +61,7 @@ class AppointmentController extends Controller
         
             session()->flash('success', 'Appointment created successfully.');
         
-            return redirect()->route('appointments.index');
+            return redirect()->route('appointments.index')->withSuccess(__('Appointment created successfully.'));;
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
@@ -64,35 +71,48 @@ class AppointmentController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Appointment $appointment)
+    public function update(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Appointment $appointment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Appointment $appointment)
-    {
-        //
+        try {
+            $validatedData = $request->validate([
+                'id' => 'required|exists:appointments,id',
+                'name' => 'required',
+                'phone' => 'required',
+                'date' => 'required|date_format:Y-m-d H:i:s'
+            ]);
+        
+            DB::beginTransaction();
+        
+            $appointment = Appointment::findOrFail($validatedData['id']);
+        
+            $appointment->update([
+                'name' => $validatedData['name'],
+                'phone' => $validatedData['phone'],
+                'appointment_date' => $validatedData['date'],
+            ]);
+        
+            DB::commit();
+        
+            session()->flash('success', 'Appointment updated successfully.');
+        
+            return redirect()->route('appointments.index')->withSuccess(__('Appointment updated successfully.'));
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            DB::rollBack();
+        
+            return redirect()->back()->with('error', 'An error occurred while updating the appointment.');
+        }
+        
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Appointment $appointment)
+    public function destroy($appointment)
     {
-        //
+        $appointment = Appointment::findOrFail($appointment)->delete();
+
+        return redirect()->route('appointments.index')->withSuccess(__('Appointment deleted successfully.'));
     }
 }

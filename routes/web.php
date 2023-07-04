@@ -27,8 +27,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
     Route::get('/appointments/{id}', [AppointmentController::class, 'show'])->name('appointments.show');
     Route::get('/appointments/{id}/edit', [AppointmentController::class, 'edit'])->name('appointments.edit');
-    Route::put('/appointments/{id}', [AppointmentController::class, 'update'])->name('appointments.update');
+    Route::post('/appointment/update', [AppointmentController::class, 'update'])->name('appointments.update');
     Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
+
 });
 
 require __DIR__.'/auth.php';
