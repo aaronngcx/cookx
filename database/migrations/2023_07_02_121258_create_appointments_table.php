@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->string('name');
+            $table->string('phone');
             $table->dateTime('appointment_date');
             $table->timestamps();
             $table->softDeletes();
