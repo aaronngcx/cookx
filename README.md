@@ -7,6 +7,14 @@ Setup Guide:
 6. php artisan serve
 7. create db: cookx
 8. php artisan migrate
+9. php artisan db:seed --class=UserSeeder
+10a. Login 
+Email: admin@mail.com
+Password: password
+
+OR
+
+10b. http://cookx.test/register
 
 Assumptions:
 1. CookX will have unlimited amount of designers to attend to appointments

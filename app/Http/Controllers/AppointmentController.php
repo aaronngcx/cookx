@@ -14,7 +14,7 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        $appointments = Appointment::where('user_id', auth()->user()->id)->get();
+        $appointments = Appointment::all();
 
         return view('appointment.index', compact('appointments'));
     }
