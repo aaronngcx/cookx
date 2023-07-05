@@ -8,7 +8,7 @@ Setup Guide:
 7. create db: cookx
 8. php artisan migrate
 9. php artisan db:seed --class=UserSeeder
-10a. Login 
+10. Login 
 Email: admin@mail.com
 Password: password
 
